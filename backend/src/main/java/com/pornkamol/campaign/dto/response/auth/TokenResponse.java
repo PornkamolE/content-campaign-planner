@@ -1,4 +1,4 @@
-package com.pornkamol.campaign.dto.request.auth;
+package com.pornkamol.campaign.dto.response.auth;
 
 public record TokenResponse(
         String accessToken,

@@ -1,9 +1,10 @@
 package com.pornkamol.campaign.dto.response.auth;
 
-import java.util.List;
-
 public record MeResponse(
+        Long id,
+        String username,
         String email,
-        List<String> roles
+        String role,
+        String avatarUrl
 ) {
 }

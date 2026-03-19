@@ -4,7 +4,8 @@ import com.pornkamol.campaign.domain.user.Role;
 import com.pornkamol.campaign.domain.user.User;
 import com.pornkamol.campaign.dto.request.auth.LoginRequest;
 import com.pornkamol.campaign.dto.request.auth.RegisterRequest;
-import com.pornkamol.campaign.dto.request.auth.TokenResponse;
+import com.pornkamol.campaign.dto.response.auth.MeResponse;
+import com.pornkamol.campaign.dto.response.auth.TokenResponse;
 import com.pornkamol.campaign.repository.user.RoleRepository;
 import com.pornkamol.campaign.repository.user.UserRepository;
 import com.pornkamol.campaign.security.JwtService;
@@ -67,5 +68,24 @@ public class AuthService {
 
         String token = jwtService.generateAccessToken(u.getEmail());
         return new TokenResponse(token, "Bearer");
+    }
+
+    public MeResponse me(String email) {
+        var u = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+
+        String role = u.getRoles().stream()
+                .map(Role::getName)
+                .sorted()
+                .findFirst()
+                .orElse("USER");
+
+        return new MeResponse(
+                u.getId(),
+                u.getFullName(),
+                u.getEmail(),
+                role,
+                u.getAvatarUrl()
+        );
     }
 }

@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: campaign-postgres
+    environment:
+      POSTGRES_DB: campaign_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15432:5432"
+    volumes:
+      - campaign_pg_data:/var/lib/postgresql/data
+
+volumes:
+  campaign_pg_data:

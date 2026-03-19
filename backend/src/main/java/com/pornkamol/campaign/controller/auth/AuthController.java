@@ -2,7 +2,7 @@ package com.pornkamol.campaign.controller.auth;
 
 import com.pornkamol.campaign.dto.request.auth.LoginRequest;
 import com.pornkamol.campaign.dto.request.auth.RegisterRequest;
-import com.pornkamol.campaign.dto.request.auth.TokenResponse;
+import com.pornkamol.campaign.dto.response.auth.TokenResponse;
 import com.pornkamol.campaign.dto.response.ApiResponse;
 import com.pornkamol.campaign.service.auth.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
