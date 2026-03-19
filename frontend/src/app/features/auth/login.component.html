@@ -1,0 +1,81 @@
+<div class="page">
+  <div class="shell">
+    <div class="brand-wrap">
+      <div class="logo">⌄</div>
+      <h1 class="brand-title">Campaign Planner</h1>
+      <p class="brand-subtitle">Sign in to manage your marketing strategy</p>
+    </div>
+
+    <div class="card">
+      <form class="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <span class="icon">✉</span>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              placeholder="name@company.com"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <a href="#" class="link">Forgot password?</a>
+          </div>
+
+          <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input
+              id="password"
+              name="password"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              placeholder="••••••••"
+            />
+            <button type="button" class="eye-btn" (click)="togglePassword()">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="errorMsg" class="error">
+          {{ errorMsg }}
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Signing In...' : 'Sign In' }}
+        </button>
+      </form>
+
+      <div class="divider">
+        <span>OR CONTINUE WITH</span>
+      </div>
+
+      <div class="social-row">
+        <button type="button" class="social-btn">Google</button>
+        <button type="button" class="social-btn">SSO</button>
+      </div>
+
+      <div class="card-footer">
+        <p>
+          Don't have an account?
+          <a href="#">Sign up for free</a>
+        </p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© {{ year }} Campaign Planner. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+      </div>
+    </footer>
+  </div>
+</div>
