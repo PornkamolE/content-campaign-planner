@@ -9,8 +9,10 @@ import com.pornkamol.campaign.dto.response.auth.TokenResponse;
 import com.pornkamol.campaign.repository.user.RoleRepository;
 import com.pornkamol.campaign.repository.user.UserRepository;
 import com.pornkamol.campaign.security.JwtService;
+import com.pornkamol.campaign.service.file.FileStorageService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -21,31 +23,43 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final FileStorageService fileStorageService;
 
     public AuthService(
             UserRepository userRepository,
             RoleRepository roleRepository,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService
+            JwtService jwtService,
+            FileStorageService fileStorageService
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.fileStorageService = fileStorageService;
     }
 
-    public TokenResponse register(RegisterRequest rq) {
-        if (userRepository.existsByEmail(rq.email())) {
-            throw new RuntimeException("email alreadey exists");
+    public TokenResponse register(RegisterRequest rq, MultipartFile avatarFile) {
+        if (userRepository.existsByEmail(rq.getEmail())) {
+            throw new RuntimeException("email already exists");
         }
 
         Role userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("role USER not found"));
 
+        String avatarUrl = fileStorageService.storeAvatar(avatarFile);
+
         User u = new User();
-        u.setEmail(rq.email());
-        u.setPassword(passwordEncoder.encode(rq.password()));
+        u.setFullName(rq.getFullName());
+        u.setEmail(rq.getEmail());
+        u.setPassword(passwordEncoder.encode(rq.getPassword()));
         u.setEnabled(true);
+        u.setAvatarUrl(avatarUrl);
+        u.setLocation(rq.getLocation());
+        u.setJobTitle(rq.getJobTitle());
+        u.setOrganizationName(rq.getOrganizationName());
+        u.setPlanName(rq.getPlanName());
+        u.setTwoFactorEnabled(Boolean.TRUE.equals(rq.getTwoFactorEnabled()));
         u.setRoles(Set.of(userRole));
 
         userRepository.save(u);
@@ -85,7 +99,12 @@ public class AuthService {
                 u.getFullName(),
                 u.getEmail(),
                 role,
-                u.getAvatarUrl()
+                u.getAvatarUrl(),
+                u.getLocation(),
+                u.getJobTitle(),
+                u.getOrganizationName(),
+                u.getPlanName(),
+                u.isTwoFactorEnabled()
         );
     }
 }

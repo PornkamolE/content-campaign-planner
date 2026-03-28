@@ -19,6 +19,11 @@ spring:
   flyway:
     enabled: true
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
 server:
   port: 8080
 
@@ -26,3 +31,5 @@ app:
   jwt:
     secret: "change-me-to-a-long-random-secret-change-me"
     access-token-minutes: 60
+  upload-dir: uploads
+  base-url: http://localhost:8080

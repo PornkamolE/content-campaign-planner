@@ -38,6 +38,21 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "job_title")
+    private String jobTitle;
+
+    @Column(name = "organization_name")
+    private String organizationName;
+
+    @Column(name = "plan_name")
+    private String planName;
+
+    @Column(name = "two_factor_enabled")
+    private boolean twoFactorEnabled;
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

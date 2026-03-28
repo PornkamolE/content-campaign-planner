@@ -8,12 +8,29 @@ interface LoginRequest {
   password: string;
 }
 
-interface LoginResponse {
+interface AuthResponse {
   success: boolean;
   message: string;
   data: {
     accessToken: string;
     tokenType: string;
+  };
+}
+
+interface MeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    fullName: string | null;
+    email: string;
+    role: string;
+    avatarUrl: string | null;
+    location: string | null;
+    jobTitle: string | null;
+    organizationName: string | null;
+    planName: string | null;
+    twoFactorEnabled: boolean;
   };
 }
 
@@ -23,11 +40,11 @@ interface LoginResponse {
 export class AuthService {
   private readonly TOKEN_KEY = "access_token";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  login(payload: LoginRequest): Observable<LoginResponse> {
+  login(payload: LoginRequest): Observable<AuthResponse> {
     return this.http
-      .post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, payload)
+      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, payload)
       .pipe(
         tap((res) => {
           this.setSession(res);
@@ -35,7 +52,21 @@ export class AuthService {
       );
   }
 
-  setSession(res: LoginResponse): void {
+  register(payload: FormData): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/register`, payload)
+      .pipe(
+        tap((res) => {
+          this.setSession(res);
+        })
+      );
+  }
+
+  getMe(): Observable<MeResponse> {
+    return this.http.get<MeResponse>(`${environment.apiBaseUrl}/auth/me`);
+  }
+
+  setSession(res: AuthResponse): void {
     localStorage.setItem(this.TOKEN_KEY, res.data.accessToken);
   }
 
@@ -50,10 +81,10 @@ export class AuthService {
       return null;
     }
 
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const payload = JSON.parse(atob(token.split(".")[1]));
     return {
       email: payload.sub,
-      roles: payload.roles
+      roles: payload.roles,
     };
   }
 
