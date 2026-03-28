@@ -1,0 +1,199 @@
+<div class="page">
+  <div class="shell register-shell">
+    <div class="brand-wrap">
+      <div class="logo">⌄</div>
+      <h1 class="brand-title">Campaign Planner</h1>
+      <p class="brand-subtitle">Create your account to start planning smarter campaigns</p>
+    </div>
+
+    <div class="card">
+      <form class="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              [(ngModel)]="fullName"
+              placeholder="Your full name"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <span class="icon">✉</span>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              placeholder="name@company.com"
+            />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="organizationName">Organization</label>
+            <div class="input-wrap">
+              <span class="icon">🏢</span>
+              <input
+                id="organizationName"
+                name="organizationName"
+                type="text"
+                [(ngModel)]="organizationName"
+                placeholder="Company name"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="jobTitle">Job title</label>
+            <div class="input-wrap">
+              <span class="icon">💼</span>
+              <input
+                id="jobTitle"
+                name="jobTitle"
+                type="text"
+                [(ngModel)]="jobTitle"
+                placeholder="Marketing Manager"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="location">Location</label>
+            <div class="input-wrap">
+              <span class="icon">📍</span>
+              <input
+                id="location"
+                name="location"
+                type="text"
+                [(ngModel)]="location"
+                placeholder="Bangkok, Thailand"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="planName">Plan</label>
+            <div class="input-wrap">
+              <span class="icon">⭐</span>
+              <select id="planName" name="planName" [(ngModel)]="planName">
+                <option value="Free">Free</option>
+                <option value="Starter">Starter</option>
+                <option value="Pro">Pro</option>
+                <option value="Enterprise">Enterprise</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="avatarFile">Avatar</label>
+
+          <div class="upload-control">
+            <input
+              #avatarInput
+              id="avatarFile"
+              name="avatarFile"
+              type="file"
+              accept="image/*"
+              (change)="onAvatarSelected($event)"
+              class="file-input-hidden"
+            />
+
+            <button type="button" class="file-btn" (click)="avatarInput.click()">
+              Choose Image
+            </button>
+
+            <span class="file-name">
+              {{ avatarFileName || 'No file selected' }}
+            </span>
+          </div>
+
+          <div *ngIf="avatarPreviewUrl" class="avatar-preview">
+            <img [src]="avatarPreviewUrl" alt="Avatar preview" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input
+              id="password"
+              name="password"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              placeholder="At least 8 characters"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              (click)="togglePassword()"
+              aria-label="Toggle password visibility"
+            >
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              [(ngModel)]="confirmPassword"
+              placeholder="Re-enter your password"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              (click)="toggleConfirmPassword()"
+              aria-label="Toggle confirm password visibility"
+            >
+            </button>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="twoFactorEnabled" [(ngModel)]="twoFactorEnabled" />
+          <span>Enable two-factor authentication</span>
+        </label>
+
+        <div *ngIf="errorMsg" class="error">
+          {{ errorMsg }}
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Creating Account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <div class="card-footer">
+        <p>
+          Already have an account?
+          <a routerLink="/login">Sign in</a>
+        </p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© {{ year }} Campaign Planner. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+      </div>
+    </footer>
+  </div>
+</div>
